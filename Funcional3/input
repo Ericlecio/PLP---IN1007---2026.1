@@ -1,0 +1,8 @@
+let 
+    var soma = fn x y . x + y
+in
+    describe("Suite Calculadora", 
+        test("Soma simples", expect(soma(2, 3), 5)),
+        test("Soma errada proposital", expect(soma(2, 2), 99)),
+        test("Captura erro de tipo", toThrow(soma(1, "texto")))
+    )
