@@ -10,7 +10,7 @@
 
 Durante o desenvolvimento de programas nas linguagens construídas na disciplina, o processo de verificação de corretude (testes) costuma ser manual, intrusivo e bloqueante. Os testes frequentemente poluem o código principal com verificações manuais. Além disso, se uma função testada gera um erro de escopo ou tipagem, o interpretador interrompe a execução abruptamente (Fail-Fast), impedindo que o restante do programa seja avaliado.
 
-Para solucionar esse problema, este projeto propõe a extensão da **Linguagem Funcional 3** com a criação de uma DSL (_Domain-Specific Language_) nativa para Testes Unitários, inspirada em frameworks consolidados no mercado, como Jest e HUnit.
+Para solucionar esse problema, este projeto propõe a extensão da **Linguagem Funcional 3** com a criação de uma DSL (_Domain-Specific Language_) nativa para Testes Unitários. A arquitetura foi desenhada com forte inspiração no **BDD (Behavior-Driven Development)** e em frameworks consolidados do mercado (como Jest e HUnit), permitindo que os testes sirvam não apenas como validadores de código, mas como documentação viva do comportamento do sistema.
 
 ## 2. Objetivos e Escopo
 
@@ -18,7 +18,7 @@ O objetivo central é prover suporte nativo na Árvore Sintática Abstrata (AST)
 
 ### Características da implementação:
 
-- **Sintaxe Declarativa:** Adição das palavras reservadas `describe`, `test`, `expect` (para fluxos de sucesso) e `toThrow` (para fluxos de erro esperado).
+- **Sintaxe Declarativa e BDD:** Adição das palavras reservadas `describe`, `test`, `expect` (para fluxos de sucesso) e `toThrow` (para fluxos de erro esperado). A estrutura dos nós induz o programador a descrever regras de negócio (usando o padrão _Dado / Quando / Então_) em vez de apenas validar variáveis soltas.
 - **Isolamento de Falhas (Non-blocking):** Falhas em asserções ou exceções lançadas durante a avaliação de um teste serão capturadas pelo interpretador (_try/catch_ no nível da AST em Java), garantindo que o programa continue rodando a suíte.
 - **Relatório Consolidado:** Ao final da execução de uma suíte (`describe`), o interpretador exibirá no terminal um relatório sumarizando a quantidade de testes que passaram, que falharam e os respectivos logs de erro.
 - **Exportação para CI/CD:** Geração automática de um arquivo `test-results.json` na raiz do projeto com os resultados da execução, facilitando integrações futuras.
@@ -55,28 +55,32 @@ mvn exec:java "-Dexec.mainClass=lf3.plp.functional3.parser.Func3Parser"
 
 ## 5. Exemplo de Uso (Sintaxe Validada)
 
-Na Funcional 3, como um programa é uma expressão, a suíte de testes será avaliada como tal. O exemplo abaixo demonstra o uso validando tanto o caminho feliz, quanto erros lógicos e a captura de uma exceção interna do interpretador:
+Na Funcional 3, como um programa é uma expressão, a suíte de testes será avaliada como tal. O exemplo abaixo demonstra o uso da DSL aplicando o padrão BDD para validar tanto o caminho feliz quanto a captura de uma exceção interna do interpretador:
 
 **Arquivo `input`:**
 
 ```haskell
 let
-    var soma = fn x y . x + y
+    var sacar = fn saldo valor . if saldo > valor then saldo - valor else saldo - "texto"
 in
-    describe("Suite Calculadora",
-        test("Soma simples", expect(soma(2, 3), 5)),
-        test("Soma errada proposital", expect(soma(2, 2), 99)),
-        test("Captura erro de tipo", toThrow(soma(1, "texto")))
+    describe("Operacao de Saque no Caixa Eletronico",
+        test("Dado saldo positivo, Quando sacar, Entao deve liberar dinheiro",
+            expect(sacar(100, 20), 80)
+        ),
+        test("Dado saldo insuficiente, Quando tentar sacar, Entao deve gerar erro nativo",
+            toThrow(sacar(10, 50))
+        )
     )
 ```
 
 ### Saída no Terminal:
 
 ```text
-=== RELATÓRIO DE TESTES: Suite Calculadora ===
-Total Executados: 3
+=== RELATÓRIO DE TESTES: Operacao de Saque no Caixa Eletronico ===
+Total Executados: 2
 Passaram: 2
-Falharam: 1
+Falharam: 0
+=====================================
 
 Detalhes das Falhas:
 [FALHOU] Soma errada proposital -> Esperado 99, mas obteve 4
@@ -90,6 +94,8 @@ _(Além disso, um arquivo `test-results.json` será gerado na raiz do projeto)._
 ## 6. Backus-Naur Form (BNF) Atualizada
 
 ```bnf
+Programa ::= Expressao
+
 Programa ::= Expressao
 
 Expressao ::= Valor | ExpUnaria | ExpBinaria | ExpDeclaracao
