@@ -37,6 +37,7 @@ public class ExpDescribe implements Expressao {
 
         String relatorio = manager.gerarRelatorio(nomeSuite);
         System.out.println(relatorio);
+        manager.exportarResultadosJson(nomeSuite);
 
         return new ValorString(relatorio);
     }
