@@ -25,20 +25,41 @@ public class ExpTest implements Expressao {
 
     @Override
     public Valor avaliar(AmbienteExecucao amb) throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
-        String nomeDoTeste = ((ValorString) descricao.avaliar(amb)).valor();
         GerenciadorDeTestes manager = GerenciadorDeTestes.getInstancia();
-
+        String nomeDoTeste = null;
         try {
+            Valor descValor = descricao.avaliar(amb);
+            if (!(descValor instanceof ValorString)) {
+                throw new TesteFalhouException("A descrição do teste deve ser uma string.");
+            }
+            nomeDoTeste = ((ValorString) descValor).valor();
             assercao.avaliar(amb);
             manager.registrarSucesso();
             return new ValorBooleano(true);
         } catch (TesteFalhouException e) {
-            manager.registrarFalha(nomeDoTeste, e.getMessage());
+            manager.registrarFalha(nomeRotulo(nomeDoTeste), mensagemOuTipo(e));
             return new ValorBooleano(false);
-        } catch (Exception e) {
-            manager.registrarFalha(nomeDoTeste, "Erro nativo não tratado: " + e.getMessage());
+        } catch (Throwable t) {
+            manager.registrarFalha(nomeRotulo(nomeDoTeste), mensagemErroNativo(t));
             return new ValorBooleano(false);
         }
+    }
+
+    private static String nomeRotulo(String nomeDoTeste) {
+        return nomeDoTeste != null ? nomeDoTeste : "(erro ao obter nome do teste)";
+    }
+
+    private static String mensagemOuTipo(Throwable t) {
+        String m = t.getMessage();
+        return (m != null && !m.isEmpty()) ? m : t.getClass().getSimpleName();
+    }
+
+    private static String mensagemErroNativo(Throwable t) {
+        String m = t.getMessage();
+        if (m != null && !m.isEmpty()) {
+            return "Erro nativo não tratado: " + m;
+        }
+        return "Erro nativo não tratado: " + t.getClass().getSimpleName();
     }
 
     @Override
@@ -54,7 +75,6 @@ public class ExpTest implements Expressao {
 
     @Override
     public Tipo getTipo(AmbienteCompilacao amb) {
-        // CORRIGIDO AQUI
         return TipoPrimitivo.BOOLEANO;
     }
 
