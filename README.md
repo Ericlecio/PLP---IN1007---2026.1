@@ -8,9 +8,9 @@
 
 ## 1. Introdução e Motivação
 
-Durante o desenvolvimento de programas nas linguagens construídas na disciplina, o processo de verificação de corretude (testes) costuma ser manual, intrusivo e bloqueante. Os testes frequentemente poluem o código principal com verificações manuais. Além disso, se uma função testada gera um erro de escopo ou tipagem, o interpretador interrompe a execução abruptamente (Fail-Fast), impedindo que o restante do programa seja avaliado.
+O processo de verificação de testes costuma ser manual, intrusivo e bloqueante. Os testes frequentemente poluem o código principal com verificações manuais. Além disso, se uma função testada gera um erro de escopo ou tipagem, o interpretador interrompe a execução abruptamente (Fail-Fast), impedindo que o restante do programa seja avaliado.
 
-Para solucionar esse problema, este projeto propõe a extensão da **Linguagem Funcional 3** com a criação de uma DSL (_Domain-Specific Language_) nativa para Testes Unitários. A arquitetura foi desenhada com forte inspiração no **BDD (Behavior-Driven Development)** e em frameworks consolidados do mercado (como Jest e HUnit), permitindo que os testes sirvam não apenas como validadores de código, mas como documentação viva do comportamento do sistema.
+Então este projeto propõe a extensão da **Linguagem Funcional 3** com a criação de uma DSL (_Domain-Specific Language_) nativa para Testes Unitários. A arquitetura foi inspiração no **BDD (Behavior-Driven Development)** e em frameworks consolidados do mercado (como Jest e HUnit), permitindo que os testes sirvam não apenas como validadores de código, mas como documentação viva do comportamento do sistema.
 
 ## 2. Objetivos e Escopo
 
@@ -80,11 +80,7 @@ in
 Total Executados: 2
 Passaram: 2
 Falharam: 0
-=====================================
 
-Detalhes das Falhas:
-[FALHOU] Soma errada proposital -> Esperado 99, mas obteve 4
-=====================================
 ```
 
 _(Além disso, um arquivo `test-results.json` será gerado na raiz do projeto)._
@@ -134,7 +130,7 @@ ExpToThrow ::= "toThrow" "(" Expressao ")"
 ## 7. Classes Principais Desenvolvidas
 
 - **`Funcional3.jj`:** Arquivo de gramática alterado para incorporar os novos _tokens_ (`describe`, `test`, `expect`, `toThrow`) evitando conflitos de recursividade com a estrutura padrão.
-- **`ExpDescribe`, `ExpTest`, `ExpExpect`:** Novas classes que herdam de _Expressao_. O `ExpTest` atua como um escudo protetor da AST (engolindo erros), e o `ExpExpect` valida nativamente a igualdade de valores.
+- **`ExpDescribe`, `ExpTest`, `ExpExpect`:** Novas classes que herdam de _Expressao_. O `ExpTest` atua como um escudo da AST (pegando os erros), e o `ExpExpect` valida nativamente a igualdade de valores.
 - **`ExpToThrow`:** Nó com semântica invertida. Intercepta erros sistêmicos (_Exceptions_ nativas do interpretador) tornando-os resultados positivos em fluxos de testes onde o erro era desejado.
 - **`TesteFalhouException`:** Exceção customizada no Java para gerenciar asserções incorretas de forma controlada, separando-as de erros sistêmicos reais da linguagem.
 - **`GerenciadorDeTestes`:** Classe utilitária (_Singleton_) no interpretador Java responsável por armazenar os estados das execuções em memória (_side-effects_ pacíficos), além de formatar o relatório impresso no console e exportar o arquivo JSON final.
