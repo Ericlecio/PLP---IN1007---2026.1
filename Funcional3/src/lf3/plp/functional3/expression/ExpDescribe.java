@@ -58,7 +58,6 @@ public class ExpDescribe implements Expressao {
 
     @Override
     public Tipo getTipo(AmbienteCompilacao amb) {
-        // CORRIGIDO AQUI
         return TipoPrimitivo.STRING;
     }
 

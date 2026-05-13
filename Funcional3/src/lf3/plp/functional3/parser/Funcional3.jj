@@ -189,6 +189,7 @@ TOKEN : /* TOKENS DE FUNCIONAL 3 */
 | < HEAD : "head" >
 | < TAIL : "tail" >
 | < FOR : "for" >
+
 /* --- NOVOS TOKENS DA DSL DE TESTES --- */
 | < DESCRIBE : "describe" >
 | < TEST : "test" >
@@ -763,7 +764,7 @@ Expressao PExpUnaria() :
   Expressao retorno;
 }
 {
-  // [EDITADO] Removidos LOOKAHEADs manuais excessivos para deixar o Parser agir naturalmente pelos Tokens
+  //  Removidos LOOKAHEADs manuais excessivos para deixar o Parser agir naturalmente pelos Tokens
   (
       retorno = PExpMenos()
     | retorno = PExpNot()

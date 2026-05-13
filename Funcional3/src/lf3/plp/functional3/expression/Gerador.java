@@ -43,8 +43,6 @@ public class Gerador {
 			Expressao expressao, Expressao filtro)
 			throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
 
-		// Usamos uma lista auxiliar pois a lista original pode ser  
-		// iterada mais de uma vez.
 		ValorLista temp = (ValorLista) this.expressao.avaliar(amb);
 
 		// Enquanto houver elementos na lista
@@ -56,17 +54,12 @@ public class Gerador {
 			amb.map(this.id, valor);
 			temp = temp.getTail();
 
-			// Se esse for o �ltimo gerador, ent�o devemos avaliar a express�o
-			// de filtro e, se o resultado for 'true', devemos avaliar a express�o
-			// em si adicionando seu resultado a lista de sa�da.
 			if (getProximoGerador() == null) {
 				if (filtro == null
 						|| ((ValorBooleano) filtro.avaliar(amb)).valor()) {
 					resultado.cons(expressao.avaliar(amb));
 				}
 			} else {
-				// Se um pr�ximo gerador encadeado devemos chamar 'gerarValores' para 
-				// que esse gerador fa�a o bind de sua vari�vel.
 				getProximoGerador().gerarValores(amb, resultado, expressao,
 						filtro);
 			}
@@ -104,10 +97,10 @@ public class Gerador {
 
 	public void reduzir(AmbienteExecucao ambiente) {
 		this.expressao.reduzir(ambiente);
-		
+
 		ambiente.map(this.id, new ValorIrredutivel());
 	}
-	
+
 	public String toString() {
 		return " for " + this.id + " in " + this.expressao;
 	}

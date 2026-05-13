@@ -46,7 +46,6 @@ public class ExpExpect implements Expressao {
 
     @Override
     public Tipo getTipo(AmbienteCompilacao amb) {
-        // CORRIGIDO AQUI
         return TipoPrimitivo.BOOLEANO;
     }
 

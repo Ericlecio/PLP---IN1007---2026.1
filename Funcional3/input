@@ -1,8 +1,28 @@
 let 
-    var soma = fn x y . x + y
+    var processarDados = fn x y . x + y
 in
-    describe("Suite Calculadora", 
-        test("Soma simples", expect(soma(2, 3), 5)),
-        test("Soma errada proposital", expect(soma(2, 2), 99)),
-        test("Captura erro de tipo", toThrow(soma(1, "texto")))
+    describe("Suite de Tipagem Dinamica", 
+        
+        // TESTE 1: Normal (Passa)
+        test("Soma de dois inteiros", 
+            expect(processarDados(15, 5), 20)
+        ),
+
+        // TESTE 2: Erro de Tipo Inesperado (Falha e é absorvido)
+        // Somar Inteiro com Booleano vai estourar erro no ExpSoma. O ExpTest salva o dia.
+        test("Soma de Inteiro com Booleano (Falha absorvida)", 
+            toThrow(processarDados(10, true))
+        ),
+
+        // TESTE 3: Erro de Tipo Esperado (Passa)
+        // Mesma conta inválida, mas agora usando toThrow.
+        test("Soma de Inteiro com String usando toThrow (Passa)", 
+            toThrow(processarDados(5, "texto"))
+        ),
+
+        // TESTE 4: Teste final (Passa)
+        // Prova que a suíte não morreu no Teste 2.
+        test("Soma simples no fim do arquivo", 
+            expect(processarDados(1, 1), 2)
+        )
     )
