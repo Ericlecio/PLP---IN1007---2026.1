@@ -1,0 +1,28 @@
+let
+    // 1º Nível: O compilador aprende o que é "calcular"
+    var calcular = fn a b . a + b 
+in
+    let
+        // 2º Nível: Agora ele já conhece o "calcular" e consegue criar o "processarDados"
+        var processarDados = fn x y . calcular(x, y) - 5
+    in
+        describe("Suite Avancada: Propagacao de Erros na AST",
+            
+            test("1. Falha de Logica (Controle)", 
+                 // 10 + 20 = 30. 30 - 5 = 25.
+                 // Esperamos 99 para testar a falha de logica.
+                 expect(processarDados(10, 20), 99)
+            ),
+            
+            test("2. Exception Bubbling (Erro de Cast Profundo)", 
+                 // Passamos um Inteiro e uma String.
+                 // O erro (ClassCastException) vai estourar DENTRO da função 'calcular'.
+                 // A falha vai "subir" (bubble up) pela AST até ser interceptada pelo toThrow.
+                 toThrow(processarDados(10, "texto invalido"))
+            ),
+            
+            test("3. Sobrevivencia do Interpretador", 
+                 // Prova de que a AST não foi corrompida após o erro fatal do Java
+                 expect(calcular(5, 5), 10)
+            )
+        )

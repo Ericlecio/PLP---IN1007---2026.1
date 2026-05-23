@@ -1,28 +1,17 @@
-let 
-    var processarDados = fn x y . x + y
+let
+    var sacar = fn saldo valor . if saldo > valor then saldo - valor else saldo
 in
-    describe("Suite de Tipagem Dinamica", 
+    describe("Suite de Auditoria de Saques",
         
-        // TESTE 1: Normal (Passa)
-        test("Soma de dois inteiros", 
-            expect(processarDados(15, 5), 20)
+        test("1. Saque dentro do limite", 
+             expect(sacar(100, 20), 80)
         ),
-
-        // TESTE 2: Erro de Tipo Inesperado (Falha e é absorvido)
-        // Somar Inteiro com Booleano vai estourar erro no ExpSoma. O ExpTest salva o dia.
-        test("Soma de Inteiro com Booleano (Falha absorvida)", 
-            toThrow(processarDados(10, true))
+        
+        test("2. Falha critica de memoria", 
+             toThrow(sacar(100, valorCorrompido))
         ),
-
-        // TESTE 3: Erro de Tipo Esperado (Passa)
-        // Mesma conta inválida, mas agora usando toThrow.
-        test("Soma de Inteiro com String usando toThrow (Passa)", 
-            toThrow(processarDados(5, "texto"))
-        ),
-
-        // TESTE 4: Teste final (Passa)
-        // Prova que a suíte não morreu no Teste 2.
-        test("Soma simples no fim do arquivo", 
-            expect(processarDados(1, 1), 2)
+        
+        test("3. Garantindo a continuidade", 
+             expect(sacar(200, 50), 150)
         )
     )

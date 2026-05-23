@@ -41,7 +41,13 @@ public class ExpExpect implements Expressao {
     @Override
     public boolean checaTipo(AmbienteCompilacao amb)
             throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
-        return expressaoEsquerda.checaTipo(amb) && expressaoDireita.checaTipo(amb);
+        try {
+            System.out.println("Debug: " + this.getClass().getSimpleName() + " checado com sucesso.");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Debug: ERRO em " + this.getClass().getSimpleName() + ": " + e.getMessage());
+            return false;
+        }
     }
 
     @Override

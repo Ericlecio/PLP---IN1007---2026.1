@@ -77,7 +77,8 @@ public class GerenciadorDeTestes {
         sb.append("  \"failed\": ").append(testesFalharam).append(",\n");
         sb.append("  \"failures\": [");
         for (int i = 0; i < logsDeFalha.size(); i++) {
-            if (i > 0) sb.append(", ");
+            if (i > 0)
+                sb.append(", ");
             sb.append("\"").append(escapeJson(logsDeFalha.get(i))).append("\"");
         }
         sb.append("]\n");
@@ -86,16 +87,27 @@ public class GerenciadorDeTestes {
     }
 
     private static String escapeJson(String s) {
-        if (s == null) return "";
+        if (s == null)
+            return "";
         StringBuilder out = new StringBuilder(s.length() + 16);
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             switch (c) {
-                case '\"': out.append("\\\""); break;
-                case '\\': out.append("\\\\"); break;
-                case '\n': out.append("\\n"); break;
-                case '\r': out.append("\\r"); break;
-                case '\t': out.append("\\t"); break;
+                case '\"':
+                    out.append("\\\"");
+                    break;
+                case '\\':
+                    out.append("\\\\");
+                    break;
+                case '\n':
+                    out.append("\\n");
+                    break;
+                case '\r':
+                    out.append("\\r");
+                    break;
+                case '\t':
+                    out.append("\\t");
+                    break;
                 default:
                     if (c < 0x20) {
                         out.append(String.format("\\u%04x", (int) c));

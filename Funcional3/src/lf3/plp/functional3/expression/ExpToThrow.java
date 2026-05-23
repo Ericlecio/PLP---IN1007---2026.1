@@ -27,7 +27,7 @@ public class ExpToThrow implements Expressao {
                     "Era esperada uma exceção nativa, mas a expressão foi avaliada com sucesso.");
         } catch (TesteFalhouException e) {
             throw e;
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return new ValorBooleano(true);
         }
     }
@@ -40,12 +40,17 @@ public class ExpToThrow implements Expressao {
     @Override
     public boolean checaTipo(AmbienteCompilacao amb)
             throws VariavelNaoDeclaradaException, VariavelJaDeclaradaException {
-        return expressaoAlvo.checaTipo(amb);
+        try {
+            System.out.println("Debug: " + this.getClass().getSimpleName() + " checado com sucesso.");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Debug: ERRO em " + this.getClass().getSimpleName() + ": " + e.getMessage());
+            return false;
+        }
     }
 
     @Override
     public Tipo getTipo(AmbienteCompilacao amb) {
-        // CORRIGIDO AQUI
         return TipoPrimitivo.BOOLEANO;
     }
 

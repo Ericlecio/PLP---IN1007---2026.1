@@ -40,6 +40,11 @@ import lf3.plp.expressions2.expression.ExpOr;
 import lf3.plp.expressions2.expression.ExpEquals;
 import lf3.plp.expressions2.expression.ExpConcat;
 
+import lf3.plp.functional3.expression.ExpDescribe;
+import lf3.plp.functional3.expression.ExpTest;
+import lf3.plp.functional3.expression.ExpExpect;
+import lf3.plp.functional3.expression.ExpToThrow;
+
 public class Func3Parser
 {
   public static void main(String args [])
@@ -76,11 +81,11 @@ public class Func3Parser
     {
       programa = parser.Input();
 
-       //if (!programa.checaTipo())
-     //{
-       //System.out.println("Funcional 3 PLP Parser Version 0.0.1: Encountered errors during parse.");
-        //System.exit(0);
-      //}
+       if (!programa.checaTipo())
+     {
+       System.out.println("Funcional 3 PLP Parser Version 0.0.1: Encountered errors during parse.");
+        System.exit(0);
+      }
       
       System.out.println("Funcional 3 PLP Parser Version 0.0.1: Funcional3 program parsed successfully.");
     }
@@ -764,7 +769,7 @@ Expressao PExpUnaria() :
   Expressao retorno;
 }
 {
-  //  Removidos LOOKAHEADs manuais excessivos para deixar o Parser agir naturalmente pelos Tokens
+  
   (
       retorno = PExpMenos()
     | retorno = PExpNot()
