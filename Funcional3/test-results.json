@@ -1,7 +1,7 @@
 {
-  "suite": "Suite de Auditoria de Saques",
+  "suite": "Suite de Alta Ordem: Passagem de Funcoes",
   "total": 3,
-  "passed": 3,
-  "failed": 0,
-  "failures": []
+  "passed": 2,
+  "failed": 1,
+  "failures": ["[FALHOU] 1. Caminho Feliz (Alta Ordem em Acao) -> Esperado 21, mas obteve 20"]
 }

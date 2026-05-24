@@ -1,0 +1,19 @@
+let
+    var aplicarDuasVezes = fn operacao x . operacao(operacao(x)),
+    
+    var dobrar = fn x . x * 2
+in
+    describe("Suite de Alta Ordem: Passagem de Funcoes",
+        
+        test("1. Caminho Feliz (Alta Ordem em Acao)", 
+             expect(aplicarDuasVezes(dobrar, 5), 20)
+        ),
+        
+        test("2. Isolamento de Falha Profunda (Funcao Corrompida)", 
+             toThrow(aplicarDuasVezes(funcaoFantasma, 5))
+        ),
+        
+        test("3. Recuperacao e Continuidade do Interpretador", 
+             expect(aplicarDuasVezes(dobrar, 10), 40)
+        )
+    )
