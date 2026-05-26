@@ -1,7 +1,7 @@
 {
-  "suite": "Suite de Alta Ordem: Passagem de Funcoes",
+  "suite": "Teste 2",
   "total": 3,
   "passed": 2,
   "failed": 1,
-  "failures": ["[FALHOU] 1. Caminho Feliz (Alta Ordem em Acao) -> Esperado 21, mas obteve 20"]
+  "failures": ["[FALHOU] 2. Isolamento de Falha Profunda (Funcao Corrompida) -> Esperado 2, mas obteve 20"]
 }

@@ -1,17 +1,19 @@
 let
-    var sacar = fn saldo valor . if saldo > valor then saldo - valor else saldo
+    var aplicarDuasVezes = fn operacao x . operacao(operacao(x)),
+    
+    var dobrar = fn x . x * 2
 in
-    describe("Suite de Auditoria de Saques",
+    describe("Teste 2",
         
-        test("1. Saque dentro do limite", 
-             expect(sacar(100, 20), 80)
+        test("1. Caminho Feliz (Alta Ordem em Acao)", 
+             expect(aplicarDuasVezes(dobrar, 5), 20)
         ),
         
-        test("2. Falha critica de memoria", 
-             toThrow(sacar(100, valorCorrompido))
+        test("2. Isolamento de Falha Profunda (Funcao Corrompida)", 
+             toThrow(expect(aplicarDuasVezes(dobrar, 5), 2))
         ),
         
-        test("3. Garantindo a continuidade", 
-             expect(sacar(200, 50), 150)
+        test("3. Recuperacao e Continuidade do Interpretador", 
+             expect(aplicarDuasVezes(dobrar, 10), 40)
         )
     )
